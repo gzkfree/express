@@ -1,6 +1,7 @@
 
 var uerdataModules = require('../dataModules/userModules')
 var axios = require('axios')
+var jwt = require('../commom/jwt.js')
 //登录请求
 exports.doLogin = (req, res) => {
     console.log(req.body)
@@ -8,9 +9,13 @@ exports.doLogin = (req, res) => {
         .then(wxres => {
             res.json({
                 code: '200',
-                msg: '成功',
+                msg: 'success',
                 data: wxres.data
             })
         })
 
+}
+exports.getToken = (req, res) => {
+    let token = jwt.generateToken(req.body.openid)
+    console.log(token)
 }
