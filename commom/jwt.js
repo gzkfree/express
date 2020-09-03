@@ -5,38 +5,35 @@ const jwt = require('jsonwebtoken');
 
 // 创建token类
 class Jwt {
-  constructor(data) {
-    this.data = data;
-    this._id = null; // 用户自定义 存放userid
-    this._date = null; // 过期时间
-    this._creatDate = null; // 创建时间
+  constructor(openid) {
+    this.secret = 'myWeappNode'
+    this._id = openid; // 用户自定义 存放userid
+    this._creatDate = Math.floor(Date.now() / 1000); // 创建时间
+    this._date = this._creatDate + 60 * 30; // 过期时间
+
   }
   // 重新生成 token
   refreshToken() {
     let data = this.data;
-    let created = Math.floor(Date.now() / 1000);
     let cert = 'myWeappNode'
     let token = jwt.sign({
       data,
-      exp: created + 60 * 30, // 过期时间 
+      exp: this._date, // 过期时间 
       iat: created, // 创建时间
     }, cert, { algorithm: 'RS256' });
     return token;
   }
   // 生成token
-  generateToken(data) {
-    console.log(data)
-    if (data) {
-      this.data = data;
+  generateToken(openid) {
+    if (openid) {
+      this._id = openid;
     }
-    let mydata = this.data;
-    let created = Math.floor(Date.now() / 1000);
-    // let cert = 'myWeappNode'
     let token = jwt.sign({
-      mydata,
-      exp: created + 60 * 30, // 过期时间 30 分钟
-      iat: created, // 创建时间
-    }, { algorithm: 'RS256' });
+      aud: this._id,
+      exp: this._date, // 过期时间 30 分钟
+      iat: this._creatDate, // 创建时间
+    }, this.secret);
+    // { algorithm: 'RS256' }
     console.log(token)
     return token;
   }
@@ -46,16 +43,15 @@ class Jwt {
       this.data = data;
     }
     let token = this.data;
-    let cert = 'justWeappNode'
     let res;
     try {
-      let result = jwt.verify(token, cert, { algorithms: ['RS256'] }) || {};
-      this._id = result.data;
+      let result = jwt.verify(token, this.secret) || {};
+      this._id = result.aud;
       this._date = result.exp;
       this._creatDate = result.iat;
       let { exp = 0 } = result, current = Math.floor(Date.now() / 1000);
       if (current <= exp) {
-        res = result.data || {};
+        res = result.aud || {};
       }
     } catch (e) {
       res = 'err';
@@ -63,4 +59,4 @@ class Jwt {
     return res;
   }
 }
-module.exports = new Jwt();
+module.exports = Jwt;

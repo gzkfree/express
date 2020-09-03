@@ -16,6 +16,18 @@ exports.doLogin = (req, res) => {
 
 }
 exports.getToken = (req, res) => {
-    let token = jwt.generateToken(req.body.openid)
-    console.log(token)
+    let token = new jwt(req.body.openid).generateToken()
+    res.json({
+        code: '200',
+        msg: 'success',
+        data: token
+    })
+}
+exports.checkToken = (req, res) => {
+    console.log(req.body)
+    res.json({
+        code: '200',
+        msg: 'success',
+        data: '你好啊！'
+    })
 }

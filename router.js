@@ -15,6 +15,7 @@ var uploadController = require('./controllers/uploadController')
 router.post('/login', userController.doLogin)
       //上传文件
       .post('/getToken', userController.getToken)
+      .post('/checkToken', userController.checkToken)
       .post('/admin/uploadFile', uploadController.doUpload)
 
 
