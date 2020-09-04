@@ -17,6 +17,7 @@ router.post('/login', userController.doLogin)
       .post('/getToken', userController.getToken)
       .post('/checkToken', userController.checkToken)
       .post('/admin/uploadFile', uploadController.doUpload)
+      .post('/updateUserInfo',userController.updateUserInfo)
 
 
 //暴露rouder
