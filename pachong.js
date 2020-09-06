@@ -17,7 +17,7 @@ const puppeteer = require('puppeteer');
     headless: false
   }));
   const page = await browser.newPage();
-  await page.goto('https://movie.douban.com');
+  await page.goto('https://movie.douban.com', { timeout: 0 });
   console.log('加载完成')
 
   const list = await page.evaluate(() => {
@@ -25,20 +25,22 @@ const puppeteer = require('puppeteer');
     const listData = []
     console.log(itemList)
     itemList.forEach((item) => {
-      let list2 = item.parentElement.querySelectorAll('.item')
-      console.log(list2)
-      listData.push(list2)
-      // let movieData = {
-      //   link: '', // 爬取到的商品详情链接
-      //   picture: '',// 爬取到的图片链接
-      //   star: '', // 价格，number类型，需要从爬取下来的数据进行转型
-      //   title: '',// 爬取到的商品标题
-      // };
-      // let img = item.querySelector('img')
-      // movieData.picture = img.src
-      // movieData.title = img.alt
-      // listData.push(movieData)
+      const list2 = item.querySelectorAll('.item')
 
+      list2.forEach((item2) => {
+        console.log('.item', item2)
+        let movieData = {
+          link: '', // 爬取到的商品详情链接
+          picture: '',// 爬取到的图片链接
+          star: '', // 价格，number类型，需要从爬取下来的数据进行转型
+          title: '',// 爬取到的商品标题
+        };
+        let img = item2.querySelector('img')
+        movieData.picture = img.src
+        movieData.title = img.alt
+        listData.push(movieData)
+      })
+      // listData.push(list2)
     })
 
     return listData
