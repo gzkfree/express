@@ -1,12 +1,15 @@
 const puppeteer = require('puppeteer');
-
-
-
+const { resolve } = require('path');
+const cookies=require('./cookies');
+var hotMovieController=require('./controllers/hotMovieController');
+// const sleep=time=>new Promise(resolve=>{
+//   setTimeout(resolve,time)
+// })
 (async () => {
   const browser = await (puppeteer.launch({
     ignoreDefaultArgs: ['--disable-extensions'],
     // 若是手动下载的chromium需要指定chromium地址, 默认引用地址为 /项目目录/node_modules/puppeteer/.local-chromium/
-    executablePath: 'D:/chrome-win32/chrome.exe',
+    // executablePath: 'D:/chrome-win32/chrome.exe',
     //设置超时时间
     timeout: 45000,
     //如果是访问https页面 此属性会忽略https错误
@@ -17,18 +20,31 @@ const puppeteer = require('puppeteer');
     headless: false
   }));
   const page = await browser.newPage();
+  await page.setCookie(...cookies);
   await page.goto('https://movie.douban.com', { timeout: 0 });
   console.log('加载完成')
-
+  // sleep(1000)
+  await page.waitFor(2000)
   const list = await page.evaluate(() => {
-    let itemList = document.querySelectorAll('.slide-mode .slide-page ')
+    let itemList =document.querySelectorAll('.slide-mode .slide-page')
     const listData = []
+    // 存放寻找的index
+    let pageIndex=[]
     console.log(itemList)
+    
     itemList.forEach((item) => {
-      const list2 = item.querySelectorAll('.item')
-
+    let result= pageIndex.find((item2)=>{
+        return item2==item.getAttribute('data-index') 
+      })
+      if(result){
+        return
+      }else{
+        pageIndex.push(item.getAttribute('data-index') ) 
+      }
+    
+      const list2 =item.querySelectorAll('.item')
+      console.log(list2)
       list2.forEach((item2) => {
-        console.log('.item', item2)
         let movieData = {
           link: '', // 爬取到的商品详情链接
           picture: '',// 爬取到的图片链接
@@ -36,7 +52,10 @@ const puppeteer = require('puppeteer');
           title: '',// 爬取到的商品标题
         };
         let img = item2.querySelector('img')
+        let strt=item2.querySelector('strong')
         movieData.picture = img.src
+        movieData.link=item2.href
+        movieData.star=strt.innerText
         movieData.title = img.alt
         listData.push(movieData)
       })
@@ -45,7 +64,7 @@ const puppeteer = require('puppeteer');
 
     return listData
   })
-  console.log(list)
+  hotMovieController.setHotMovie(list)
   // await page.screenshot({
   //   path: 'jianshu.png',
   //   type: 'png',
