@@ -33,3 +33,25 @@ exports.setHotMovie =async function (data, callback) {
     }))
     callback('完成写入')
 }
+
+exports.getHotMovie=function(data,callback){
+    var sql='select link from hot_movie'
+    connection.query(sql,[],(err,result)=>{
+        if(err){
+            callback(err)
+        }else{
+            callback(result)
+        }
+    })
+}
+exports.setHotMovieDetail=function(data,callback){
+    var sql=`INSERT INTO hot_movie_detail (title,director , scriptwriter, protagonist ,type, official_website,producer_country,language,release_date,other_name,detail)
+             VALUES (?,?,?,?,?,?,?,?,?,?,?)`
+    connection.query(sql,[data.title, data.director,data.scriptwriter,data.protagonist,data.type,data.official_website,data.producer_country,data.language,data.release_date,data.other_name,data.detail],(err,result)=>{
+        if(err){
+            callback(err)
+        }else{
+            callback(result)
+        }
+    })
+}

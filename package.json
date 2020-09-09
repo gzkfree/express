@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node app.js",
     "dev": "node-dev app.js",
-    "serve": "node-dev pachong.js"
+    "serve": "node-dev getMovieDetail.js"
   },
   "keywords": [],
   "author": "",
