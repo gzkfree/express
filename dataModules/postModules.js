@@ -30,7 +30,7 @@ exports.getPosts=(query,callback)=>{
               from posts LEFT JOIN users ON posts.user_id=users.id 
               LEFT JOIN categories ON posts.category_id=categories.id
               where posts.isdeleted=0`
-//拼接sql
+        //拼接sql
         if(query.category_id)
         {
             sql+= ` and category_id= '${query.category_id}'`

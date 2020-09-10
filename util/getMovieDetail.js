@@ -1,13 +1,18 @@
 const puppeteer = require('puppeteer');
 const { resolve } = require('path');
-const cookies = require('./cookies');
-var hotMovieController = require('./controllers/hotMovieController');
+const cookies = require('../cookies');
+var hotMovieController = require('../controllers/hotMovieController');
+const { getHotMovie } = require('../dataModules/hotMovieModules');
 
 
-hotMovieController.getHotMovie('', async (result) => {
-    var movieLink = result
-    spiderMovie(movieLink)
-})
+var getHotMovieDetail = function () {
+    hotMovieController.getHotMovie('', async (result) => {
+        var movieLink = result
+
+        spiderMovie(movieLink)
+    })
+}
+
 
 
 let spiderMovie = async (list) => {
@@ -37,6 +42,7 @@ let spiderMovie = async (list) => {
 
                 return new Promise(resolve => {
                     let obj = {
+                        movie_id: '',
                         title: '',// 标题
                         director: '',// 导演
                         scriptwriter: '', //编剧
@@ -94,16 +100,20 @@ let spiderMovie = async (list) => {
 
             await page.close()
             console.log(movieDetalItem)
+            movieDetalItem.movie_id = list[i].movie_id
             hotMovieController.setHotMovieDetail(movieDetalItem, (result) => {
                 console.log(result)
             })
             await page.waitFor(3000)
         }
-        catch(e){
+        catch (e) {
             console.log(e)
         }
-  
+
 
     }
 
+}
+module.exports = {
+    getHotMovieDetail
 }
