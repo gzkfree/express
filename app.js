@@ -31,7 +31,8 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 //使用中间件，所有路由请求的都必须经过这个中间件
 app.use((req, res, next) => {
-    if (req.url == '/login' || req.url == '/getToken') {
+    let unlessRoute=['/login','/getToken','/getHotMovieList']
+    if (unlessRoute.indexOf(req.url)!=-1) {
         next()
         return
     }
@@ -48,5 +49,4 @@ app.use((req, res, next) => {
         next()
     }
 })
-
 app.use(router)
