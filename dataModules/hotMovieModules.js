@@ -66,3 +66,14 @@ exports.setHotMovieDetail = function (data, callback) {
         }
     })
 }
+// 获取所有电影列表
+exports.getHotMovieList=function(callback){
+    var sql = `select * from hot_movie`
+    connection.query(sql, [], (err, result) => {
+        if (err) {
+            callback(err)
+        } else {
+            callback(result)
+        }
+    })
+}

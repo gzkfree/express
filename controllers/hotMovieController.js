@@ -25,3 +25,12 @@ exports.setHotMovieDetail = function (data, callback) {
     callback(result)
   })
 }
+exports.getHotMovieList=function(req,res){
+  hotMovieDataModules.getHotMovieList(result => {
+    res.json({
+      code: '200',
+      msg: 'success',
+      data: result
+   })
+  })
+}
