@@ -9,7 +9,7 @@ var uploadController = require('./controllers/uploadController')
 //引入设置模块
 // var setController = require('./controllers/setController')
 //管理前台页面
-var getMovieBySpider=require('./commom/getMovieBySpider')
+var getMovieBySpider = require('./commom/getMovieBySpider')
 getMovieBySpider.scheduleCronstyle()
 router.post('/login', userController.doLogin)
       //上传文件
@@ -17,7 +17,7 @@ router.post('/login', userController.doLogin)
       .post('/checkToken', userController.checkToken)
       .post('/getHotMovieList', hotMovieController.getHotMovieList)
       .post('/admin/uploadFile', uploadController.doUpload)
-      .post('/updateUserInfo',userController.updateUserInfo)
+      .post('/updateUserInfo', userController.updateUserInfo)
 
 
 //暴露rouder

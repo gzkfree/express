@@ -105,6 +105,7 @@ let spiderMovie = async (list) => {
                 console.log(result)
             })
             await page.waitFor(3000)
+            
         }
         catch (e) {
             console.log(e)
