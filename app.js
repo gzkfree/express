@@ -47,12 +47,8 @@ app.all('*', function (req, res, next) {
     next()
 })
 app.use((req, res, next) => {
-<<<<<<< HEAD
-    if (req.url == '/login' || req.url == '/getToken' || req.url == '/weblogin') {
-=======
-    let unlessRoute=['/login','/getToken','/getHotMovieList']
-    if (unlessRoute.indexOf(req.url)!=-1) {
->>>>>>> 90293b18319eaa83f85512e25d7418952eefa103
+    let unlessRoute = ['/login', '/getToken', '/getHotMovieList']
+    if (unlessRoute.indexOf(req.url) != -1) {
         next()
         return
     }
