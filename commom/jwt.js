@@ -9,7 +9,7 @@ class Jwt {
     this.secret = 'myWeappNode'
     this._id = openid; // 用户自定义 存放userid
     this._creatDate = Math.floor(Date.now() / 1000); // 创建时间
-    this._date = this._creatDate + 60 * 30; // 过期时间
+    this._date = this._creatDate + 60 * 60 * 72; // 过期时间
 
   }
   // 重新生成 token

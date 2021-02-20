@@ -1,13 +1,16 @@
 const puppeteer = require('puppeteer');
+const browserFetcher = puppeteer.createBrowserFetcher();
 const { resolve } = require('path');
 const cookies = require('../cookies');
 var hotMovieController = require('../controllers/hotMovieController');
+// browserFetcher.download("809590").then(res => {
 
+// })
 let getHotMovieList = async () => {
   const browser = await (puppeteer.launch({
     ignoreDefaultArgs: ['--disable-extensions'],
     // 若是手动下载的chromium需要指定chromium地址, 默认引用地址为 /项目目录/node_modules/puppeteer/.local-chromium/
-    // executablePath: 'D:/chrome-win32/chrome.exe',
+    executablePath: 'D:/chrome-win32/chrome.exe',
     //设置超时时间
     timeout: 45000,
     //如果是访问https页面 此属性会忽略https错误
@@ -15,7 +18,7 @@ let getHotMovieList = async () => {
     // 打开开发者工具, 当此值为true时, headless总为false
     devtools: false,
     // 关闭headless模式, 不会打开浏览器
-    headless: true
+    headless: false
   }));
   const page = await browser.newPage();
   await page.setCookie(...cookies);

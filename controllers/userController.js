@@ -15,6 +15,27 @@ exports.doLogin = (req, res) => {
         })
 
 }
+//后台登录请求
+exports.webLogin = (req, res) => {
+    uerdataModules.weblogin(req.body, result => {
+        console.log(result)
+        if (result.length != 0) {
+            let token = new jwt(result[0].username).generateToken()
+            res.json({
+                code: 1,
+                msg: '登录成功！',
+                data: token
+            })
+        } else {
+            res.json({
+                code: 0,
+                msg: '账号不存在或者密码错误！',
+                data: null
+            })
+        }
+    })
+
+}
 exports.getToken = (req, res) => {
     let token = new jwt(req.body.openid).generateToken()
     res.json({
@@ -30,10 +51,10 @@ exports.checkToken = (req, res) => {
         data: '你好啊！'
     })
 }
-exports.updateUserInfo=(req,res)=>{
+exports.updateUserInfo = (req, res) => {
     var pc = new WXBizDataCrypt('wxec0dd78d90c4b263', req.body.sessionKey)
-    var data = pc.decryptData(req.body.encryptedData , req.body.iv)
-    uerdataModules.updateUserInfo(data,(result)=>{
+    var data = pc.decryptData(req.body.encryptedData, req.body.iv)
+    uerdataModules.updateUserInfo(data, (result) => {
         res.json({
             code: '200',
             msg: 'success',
