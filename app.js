@@ -47,13 +47,14 @@ app.all('*', function (req, res, next) {
     next()
 })
 app.use((req, res, next) => {
-    let unlessRoute = ['/login', '/getToken', '/getHotMovieList']
+    let unlessRoute = ['/login', '/getToken', '/weblogin']
+    console.log(unlessRoute.indexOf(req.url))
     if (unlessRoute.indexOf(req.url) != -1) {
         next()
         return
     }
     let result = new jwt().verifyToken(req.headers.token)
-    console.log(result)
+    console.log('token', result, req.url)
     if (result == 'err') {
         res.json({
             code: 401,
@@ -65,9 +66,4 @@ app.use((req, res, next) => {
         next()
     }
 })
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 90293b18319eaa83f85512e25d7418952eefa103
 app.use(router)

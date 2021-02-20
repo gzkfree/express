@@ -21,6 +21,6 @@ router.post('/wxlogin', userController.doLogin)
       .post('/admin/uploadFile', uploadController.doUpload)
       .post('/updateUserInfo', userController.updateUserInfo)
       .post('/getHotMovie', hotMovieController.getHotMovieToCilent)
-
+      .post('/getHotMovieDetail', hotMovieController.getHotMovieDetail)
 //暴露rouder
 module.exports = router

@@ -25,12 +25,21 @@ exports.setHotMovieDetail = function (data, callback) {
     callback(result)
   })
 }
-exports.getHotMovieList=function(req,res){
+exports.getHotMovieList = function (req, res) {
   hotMovieDataModules.getHotMovieList(result => {
     res.json({
       code: '200',
       msg: 'success',
       data: result
-   })
+    })
+  })
+}
+exports.getHotMovieDetail = function (req, res) {
+  hotMovieDataModules.getHotMovieDetail(req.body, result => {
+    res.json({
+      code: 1,
+      msg: '请求成功',
+      data: result[0]
+    })
   })
 }
